@@ -1,3 +1,0 @@
-[submodule "vendor/assets/javascripts/tic-tac-toe"]
-	path = vendor/assets/javascripts/tic-tac-toe
-	url = git@github.com:tejanium/tic-tac-toe.git
