@@ -28,6 +28,12 @@ class Game < ApplicationRecord
   has_many   :players, through: :game_players, source: :user
   has_many   :game_moves
 
+  scope :available, ->(current_user) do
+    where(start_at: nil)
+    .where(end_at: nil)
+    .where.not(id: current_user.played_game_ids)
+  end
+
   def self.new_game(user, board_size = 3)
     user.games.create!(board_size: 3).tap do |game|
       game.add_player user
@@ -44,6 +50,8 @@ class Game < ApplicationRecord
     raise "it's #{ current_player.name }'s turn" unless current_player == player
     raise 'it\'s occupied' if game_moves.find_by(row: row, column: column)
     raise 'game already over' if over?
+
+    start! unless game_started?
 
     game_moves.create! game_player: game_player(player), row: row, column: column
 
@@ -70,6 +78,10 @@ class Game < ApplicationRecord
     start_at.present?
   end
 
+  def player_turn?(player)
+    current_player == player
+  end
+
   def start!
     raise 'only have one player' if players.count == 1
     raise 'game already started' if game_started?
@@ -92,10 +104,10 @@ class Game < ApplicationRecord
   private
     def check_winner!
       winner = game_players.to_a.detect do |game_player|
-                game_player.horizontally_align? ||
-                game_player.vertically_align?   ||
-                game_player.diagonally_align?
-              end
+                 game_player.horizontally_align? ||
+                 game_player.vertically_align?   ||
+                 game_player.diagonally_align?
+               end
 
       update_attribute(:winner_id, winner.user.id) if winner
     end

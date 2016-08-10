@@ -12,6 +12,8 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 3.0'
 
+gem 'slim-rails'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'annotate'
@@ -21,7 +23,4 @@ end
 group :development do
   gem 'web-console'
   gem 'listen', '~> 3.0.5'
-
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
 end

@@ -1,0 +1,8 @@
+.tile
+  - if tile
+    = tile
+  - else
+    = form_tag move_game_path(@game), remote: true
+      = hidden_field_tag :row, row
+      = hidden_field_tag :column, column
+      = submit_tag 'move here'

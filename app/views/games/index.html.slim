@@ -1,0 +1,16 @@
+- if current_user
+  | Hello #{ current_user.name }
+  br
+  = form_for @game do |f|
+    = f.submit 'New Game'
+  ul
+    - @games.each do |game|
+      li
+        = "Game by #{ game.creator.name }"
+        | &nbsp;
+        = link_to 'Join', join_game_path(game), method: :post
+
+- else
+  = form_for @user do |f|
+    = f.text_field :name
+    = f.submit
