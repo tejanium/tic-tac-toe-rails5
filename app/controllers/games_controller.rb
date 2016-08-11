@@ -22,7 +22,7 @@ class GamesController < ApplicationController
     begin
       game.move current_user, params[:row], params[:column]
 
-      GameChannel.broadcast_to(game, body: render_to_string(:show, layout: false))
+      broadcast_game
     rescue RuntimeError => e
       flash[:error] = e
     ensure
@@ -33,6 +33,8 @@ class GamesController < ApplicationController
   def join
     begin
       game.add_player current_user
+
+      broadcast_game
     rescue RuntimeError => e
       flash[:error] = e
       redirect_to games_path
@@ -48,5 +50,11 @@ class GamesController < ApplicationController
 
     def login_required
       redirect_to root_path unless current_user
+    end
+
+    def broadcast_game
+      GameChannel.broadcast_to game,
+                               body: render_to_string(:show, layout: false),
+                               player: game.current_player.id
     end
 end

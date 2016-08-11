@@ -7,6 +7,12 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def destroy
+    logout
+
+    redirect_to root_path
+  end
+
   private
     def params_user
       params.required(:user).permit :name
