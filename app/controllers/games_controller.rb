@@ -21,6 +21,8 @@ class GamesController < ApplicationController
   def move
     begin
       game.move current_user, params[:row], params[:column]
+
+      GameChannel.broadcast_to(game, body: render_to_string(:show, layout: false))
     rescue RuntimeError => e
       flash[:error] = e
     ensure

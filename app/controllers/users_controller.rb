@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def create
-    @user = User.create name: params_user[:name]
+    @user = User.find_or_create_by name: params_user[:name]
 
     session[:user_id] = @user.id
 

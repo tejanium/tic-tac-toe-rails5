@@ -1,5 +1,5 @@
 = flash[:error]
-ul
+ul#game data-id=@game.id
   li Board: #{ @game.board_size }x#{ @game.board_size }
   li Player: #{ @game.players.pluck(:name).join(', ') }
 
