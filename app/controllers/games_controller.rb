@@ -5,7 +5,11 @@ class GamesController < ApplicationController
     @user = User.new
     @game = Game.new
 
-    @games = Game.available(current_user) if current_user
+    if current_user
+      @available_games = Game.available_for(current_user)
+      @playing_games   = current_user.played_games.available
+      @played_games    = current_user.played_games.unavailable
+    end
   end
 
   def create

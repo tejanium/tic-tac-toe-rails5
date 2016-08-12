@@ -28,11 +28,12 @@ class Game < ApplicationRecord
   has_many   :players, through: :game_players, source: :user
   has_many   :game_moves
 
-  scope :available, ->(current_user) do
-    where(start_at: nil)
-    .where(end_at: nil)
-    .where.not(id: current_user.played_game_ids)
+  scope :available, -> { where(start_at: nil).where(end_at: nil) }
+  scope :available_for, ->(user) do
+    available
+    .where.not(id: user.played_game_ids)
   end
+  scope :unavailable, -> { where.not(end_at: nil) }
 
   def self.new_game(user, board_size = 3)
     user.games.create!(board_size: 3).tap do |game|
@@ -109,6 +110,11 @@ class Game < ApplicationRecord
                  game_player.diagonally_align?
                end
 
-      update_attribute(:winner_id, winner.user.id) if winner
+      winning(winner.user) if winner
+    end
+
+    def winning(winner)
+      update_attribute :winner_id, winner.id
+      update_attribute :end_at, Time.zone.now
     end
 end
