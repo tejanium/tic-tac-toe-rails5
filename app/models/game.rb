@@ -70,6 +70,7 @@ class Game < ApplicationRecord
   end
 
   def current_player
+    return if over?
     return players.first unless last_player
 
     smart_index = players.to_a.index(last_player) - players.length + 1

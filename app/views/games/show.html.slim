@@ -2,11 +2,12 @@
 
 = flash[:error]
 
-dl#game data-id=@game.id data-player=@game.current_player.id data-user=current_user.id
+dl#game data-id=@game.id data-player=@game.current_player&.id data-user=current_user.id
   dt Board: #{ @game.board_size }x#{ @game.board_size }
   dt Players:
   - @game.game_players.each do |game_player|
     dd #{ game_player.token }: #{ game_player.user.name }
+- unless  @game.over?
   dt It's #{ @game.current_player.name }'s turn
 
 = render_game @game
