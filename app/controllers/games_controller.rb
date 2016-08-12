@@ -59,6 +59,6 @@ class GamesController < ApplicationController
     def broadcast_game
       GameChannel.broadcast_to game,
                                body: render_to_string(:show, layout: false),
-                               player: game.current_player.id
+                               player: game.current_player&.id
     end
 end

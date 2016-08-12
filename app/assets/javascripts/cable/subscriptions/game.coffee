@@ -6,5 +6,5 @@ $ ->
 
   App.cable.subscriptions.create { channel: 'GameChannel', id: $game.data('id') },
     received: (data) ->
-      $('body').html(data.body).promise().done ->
+      $('#content').html(data.body).promise().done ->
         $('.move').show() if $game.data('user') == data.player
