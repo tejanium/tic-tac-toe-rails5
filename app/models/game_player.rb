@@ -10,8 +10,14 @@
 #
 
 class GamePlayer < ApplicationRecord
+  TOKEN = (%w(X O) + ('A'..'Z').to_a).uniq
+
   belongs_to :game
   belongs_to :user
+
+  def token
+    TOKEN[game.players.to_a.index(user)]
+  end
 
   def game_moves
     game.game_moves.where(game_player_id: id)

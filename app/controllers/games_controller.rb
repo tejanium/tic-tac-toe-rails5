@@ -7,7 +7,7 @@ class GamesController < ApplicationController
 
     if current_user
       @available_games = Game.available_for(current_user)
-      @playing_games   = current_user.played_games.available
+      @playing_games   = current_user.played_games.not_end
       @played_games    = current_user.played_games.unavailable
     end
   end

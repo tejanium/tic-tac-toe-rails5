@@ -28,7 +28,9 @@ class Game < ApplicationRecord
   has_many   :players, through: :game_players, source: :user
   has_many   :game_moves
 
-  scope :available, -> { where(start_at: nil).where(end_at: nil) }
+  scope :not_start, -> { where(start_at: nil) }
+  scope :not_end,   -> { where(end_at: nil) }
+  scope :available, -> { not_start.not_end }
   scope :available_for, ->(user) do
     available
     .where.not(id: user.played_game_ids)

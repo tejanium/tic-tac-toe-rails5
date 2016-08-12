@@ -1,9 +1,10 @@
 .tile
   - if tile
-    = tile
+    h1 = tile
   - else
-    .move.hidden
-      = form_tag move_game_path(@game), remote: true
-        = hidden_field_tag :row, row
-        = hidden_field_tag :column, column
-        = submit_tag 'move here'
+    - unless @game.over?
+      .move.hidden
+        = form_tag move_game_path(@game), remote: true
+          = hidden_field_tag :row, row
+          = hidden_field_tag :column, column
+          = submit_tag 'move here'

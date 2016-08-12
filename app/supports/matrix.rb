@@ -6,7 +6,7 @@ class Matrix
 
   def process
     @game.game_moves.each do |game_move|
-      @matrix[game_move.row][game_move.column] = game_move.user.name
+      @matrix[game_move.row][game_move.column] = game_move.game_player.token
     end
 
     @matrix

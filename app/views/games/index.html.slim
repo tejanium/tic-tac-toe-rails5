@@ -4,28 +4,26 @@
     = f.submit
 
 - else
-  | Hello #{ current_user.name }&nbsp;
-  = link_to 'Logout', user_path(current_user), method: :delete
-  br
   = form_for @game do |f|
     = f.submit 'New Game'
   dl
     dt Available Games:
     - @available_games.each do |game|
       dd
-        = "Game by #{ game.creator.name }"
+        = "Game ##{ game.id } by #{ game.creator.name }"
         | &nbsp;
         = link_to 'Join', join_game_path(game), method: :post
     dt Playing:
     - @playing_games.each do |game|
       dd
-        = "Game by #{ game.creator.name }"
+        = "Game  ##{ game.id } by #{ game.creator.name }"
         | &nbsp;
-        = link_to 'Resume', game_path(game)
+        - label = game.current_player == current_user ? 'Your Turn' : 'Watch'
+        = link_to label, game_path(game), data: { turbolinks: false }
     dt Played:
     - @played_games.each do |game|
       dd
-        = "Game by #{ game.creator.name }, winner #{ game.winner.name }"
+        = "Game  ##{ game.id } by #{ game.creator.name }, winner #{ game.winner.name }"
         | &nbsp;
-        = link_to 'Review', game_path(game)
+        = link_to 'Review', game_path(game), data: { turbolinks: false }
 
