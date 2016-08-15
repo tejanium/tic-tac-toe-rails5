@@ -17,6 +17,7 @@
           th #
           th Board Size
           th Creator
+          th Players
           th
       tbody
         - @available_games.each do |game|
@@ -24,6 +25,7 @@
             td = game.id
             td = "#{ game.board_size }x#{ game.board_size }"
             td = game.creator.name
+            td = game.players.pluck(:name).join(', ')
             td = link_to 'Join', join_game_path(game), method: :post
   .row
     h4 Playing:
@@ -63,6 +65,6 @@
             td = "#{ game.board_size }x#{ game.board_size }"
             td = game.creator.name
             td = game.players.pluck(:name).join(', ')
-            td = game.winner.name
+            td = game.winner&.name || 'Draw'
             - label = game.current_player == current_user ? 'Your Turn' : 'Watch'
             td = link_to 'Review', game_path(game), data: { turbolinks: false }

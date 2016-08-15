@@ -15,3 +15,8 @@ h4 = @game.game_players.map{|x| "(#{ x.token }) #{ x.user.name }" }.join(', ')
 
 .well.game
   = render_game @game
+
+h4 History
+ol
+  - @game.game_moves.each do |game_move|
+    li = "#{ game_move.user.name } move to (#{ game_move.row }, #{ game_move.column })"

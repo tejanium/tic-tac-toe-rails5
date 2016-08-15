@@ -61,6 +61,7 @@ class Game < ApplicationRecord
     game_moves.create! game_player: game_player(player), row: row, column: column
 
     check_winner!
+    end! if draw?
   end
 
   def game_player(player)
@@ -120,6 +121,10 @@ class Game < ApplicationRecord
 
     def winning(winner)
       update_attribute :winner_id, winner.id
+      end!
+    end
+
+    def end!
       update_attribute :end_at, Time.zone.now
     end
 end
