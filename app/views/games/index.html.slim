@@ -15,12 +15,14 @@
       thead
         tr
           th #
+          th Board Size
           th Creator
           th
       tbody
         - @available_games.each do |game|
           tr
             td = game.id
+            td = "#{ game.board_size }x#{ game.board_size }"
             td = game.creator.name
             td = link_to 'Join', join_game_path(game), method: :post
   .row
@@ -29,6 +31,7 @@
       thead
         tr
           th #
+          th Board Size
           th Creator
           th Players
           th
@@ -36,6 +39,7 @@
         - @playing_games.each do |game|
           tr
             td = game.id
+            td = "#{ game.board_size }x#{ game.board_size }"
             td = game.creator.name
             td = game.players.pluck(:name).join(', ')
             - label = game.players.count == 1 ? 'Waiting' : 'Your Turn'
@@ -47,6 +51,7 @@
       thead
         tr
           th #
+          th Board Size
           th Creator
           th Players
           th Winner
@@ -55,6 +60,7 @@
         - @played_games.each do |game|
           tr
             td = game.id
+            td = "#{ game.board_size }x#{ game.board_size }"
             td = game.creator.name
             td = game.players.pluck(:name).join(', ')
             td = game.winner.name
