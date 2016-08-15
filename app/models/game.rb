@@ -37,9 +37,11 @@ class Game < ApplicationRecord
   end
   scope :unavailable, -> { where.not(end_at: nil) }
 
+  validates :board_size, numericality: { greater_than: 2 }
+
   def self.new_game(user, board_size = 3)
-    user.games.create!(board_size: 3).tap do |game|
-      game.add_player user
+    user.games.create(board_size: board_size).tap do |game|
+      game.add_player(user) if game.valid?
     end
   end
 

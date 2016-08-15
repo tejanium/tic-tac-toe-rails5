@@ -1,0 +1,14 @@
+.header.clearfix
+  nav
+  - if current_user
+    ul.nav.nav-pills.pull-right
+      li.active role="presentation"
+        = link_to 'Lobby', root_path
+    h3.text-muted Hello #{ current_user.name }
+    = link_to 'Logout', user_path(current_user), method: :delete
+  - else
+    = form_for @user, html: { class: 'form-inline' } do |f|
+      .form-group
+        = f.text_field :name, class: 'form-control', placeholder: 'Your nickname'
+      .form-group
+        = f.submit 'Join', class: 'btn btn-default'

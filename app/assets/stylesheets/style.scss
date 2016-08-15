@@ -1,13 +1,41 @@
 .tile {
   width: 100px;
   height: 100px;
-  border: 1px solid;
-  margin: 1px;
+  border: 3px solid;
   display: inline-block;
   vertical-align: top;
   text-align: center;
+  padding-top: 14px;
+
+  form {
+    margin-top: 22px;
+  }
+
+  .token {
+    font-size: 48px;
+  }
 }
 
-.hidden {
+.row-top {
+  border-top: 0;
+}
+
+.row-bottom {
+  border-bottom: 0;
+}
+
+.col-first {
+  border-left: 0;
+}
+
+.col-last {
+  border-right: 0;
+}
+
+.game {
+  text-align: center;
+}
+
+.move-hide {
   display: none;
 }

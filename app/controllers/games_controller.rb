@@ -13,9 +13,15 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = Game.new_game current_user
+    @game = Game.new_game current_user, params_game[:board_size]
 
-    redirect_to game_path @game
+    if @game.valid?
+      redirect_to game_path @game
+    else
+      flash[:error] = @game.errors.full_messages.join(', ')
+
+      redirect_to games_path
+    end
   end
 
   def show
@@ -49,7 +55,12 @@ class GamesController < ApplicationController
 
   private
     def game
-      @game ||= Game.find params[:id]
+      @game ||= Game.includes(game_moves: :game_player, game_players: [:user, :game])
+                    .find params[:id]
+    end
+
+    def params_game
+      params[:game].permit(:board_size)
     end
 
     def login_required

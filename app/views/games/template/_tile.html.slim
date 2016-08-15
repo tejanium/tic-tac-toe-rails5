@@ -1,9 +1,15 @@
-.tile
+- tile_class = ''
+- tile_class += 'row-top '    if row == 0
+- tile_class += 'row-bottom ' if row == @game.board_size - 1
+- tile_class += 'col-first '  if column == 0
+- tile_class += 'col-last '   if column == @game.board_size - 1
+
+.tile class=tile_class
   - if tile
-    h1 = tile
+    .token = tile
   - else
     - unless @game.over?
-      .move.hidden
+      .move.move-hide
         = form_tag move_game_path(@game), remote: true
           = hidden_field_tag :row, row
           = hidden_field_tag :column, column

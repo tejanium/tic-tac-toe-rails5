@@ -1,29 +1,62 @@
-- if !current_user
-  = form_for @user do |f|
-    = f.text_field :name
-    = f.submit
+= flash[:error]
 
-- else
-  = form_for @game do |f|
-    = f.submit 'New Game'
-  dl
-    dt Available Games:
-    - @available_games.each do |game|
-      dd
-        = "Game ##{ game.id } by #{ game.creator.name }"
-        | &nbsp;
-        = link_to 'Join', join_game_path(game), method: :post
-    dt Playing:
-    - @playing_games.each do |game|
-      dd
-        = "Game  ##{ game.id } by #{ game.creator.name }"
-        | &nbsp;
-        - label = game.current_player == current_user ? 'Your Turn' : 'Watch'
-        = link_to label, game_path(game), data: { turbolinks: false }
-    dt Played:
-    - @played_games.each do |game|
-      dd
-        = "Game  ##{ game.id } by #{ game.creator.name }, winner #{ game.winner.name }"
-        | &nbsp;
-        = link_to 'Review', game_path(game), data: { turbolinks: false }
-
+- if current_user
+  .row
+    .well
+      = form_for @game, html: { class: 'form-inline' } do |f|
+        .form-group
+          = f.label :board_size, 'Board Size '
+          = f.text_field :board_size, class: 'form-control', placeholder: 'Board Size', value: 3
+        .form-group
+          = f.submit 'New Game', class: 'btn btn-default'
+  .row
+    h4 Available Games:
+    table.table.table-striped
+      thead
+        tr
+          th #
+          th Creator
+          th
+      tbody
+        - @available_games.each do |game|
+          tr
+            td = game.id
+            td = game.creator.name
+            td = link_to 'Join', join_game_path(game), method: :post
+  .row
+    h4 Playing:
+    table.table.table-striped
+      thead
+        tr
+          th #
+          th Creator
+          th Players
+          th
+      tbody
+        - @playing_games.each do |game|
+          tr
+            td = game.id
+            td = game.creator.name
+            td = game.players.pluck(:name).join(', ')
+            - label = game.players.count == 1 ? 'Waiting' : 'Your Turn'
+            - label = game.current_player == current_user ? label : 'Watch'
+            td = link_to label, game_path(game), data: { turbolinks: false }
+  .row
+    h4 Played:
+    table.table.table-striped
+      thead
+        tr
+          th #
+          th Creator
+          th Players
+          th Winner
+          th
+      tbody
+        - @played_games.each do |game|
+          tr
+            td = game.id
+            td = game.creator.name
+            td = game.players.pluck(:name).join(', ')
+            td = game.winner.name
+            - label = game.current_player == current_user ? 'Your Turn' : 'Watch'
+            td = link_to 'Review', game_path(game), data: { turbolinks: false }

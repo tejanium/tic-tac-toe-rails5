@@ -1,16 +1,14 @@
 doctype html
 html
   head
-    title
-      | Tic Tac Toe
+    title Tic Tac Toe
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    - if current_user
-      #header
-        | Hello #{ current_user.name }&nbsp;| &nbsp;
-        = link_to 'Logout', user_path(current_user), method: :delete
-    br
-    #content
-      = yield
+    .container
+      = render 'shared/header'
+
+      br
+      #content
+        = yield

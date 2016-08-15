@@ -1,13 +1,16 @@
-= link_to 'Lobby', root_path
+#game.hidden data-id=@game.id data-player=@game.current_player&.id data-user=current_user.id
 
 = flash[:error]
 
-dl#game data-id=@game.id data-player=@game.current_player&.id data-user=current_user.id
-  dt Board: #{ @game.board_size }x#{ @game.board_size }
-  dt Players:
-  - @game.game_players.each do |game_player|
-    dd #{ game_player.token }: #{ game_player.user.name }
-- unless  @game.over?
-  dt It's #{ @game.current_player.name }'s turn
+h4 = @game.game_players.map{|x| "(#{ x.token }) #{ x.user.name }" }.join(', ')
 
-= render_game @game
+- if @game.over?
+  - if @game.draw?
+    h4 It's a draw
+  - else
+    h4 #{ @game.winner.name } won!
+- else
+  h4 It's #{ @game.current_player.name }'s turn
+
+.well.game
+  = render_game @game
