@@ -7,9 +7,10 @@ html
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    #header
-      | Hello #{ current_user.name }&nbsp;| &nbsp;
-      = link_to 'Logout', user_path(current_user), method: :delete
+    - if current_user
+      #header
+        | Hello #{ current_user.name }&nbsp;| &nbsp;
+        = link_to 'Logout', user_path(current_user), method: :delete
     br
     #content
       = yield
