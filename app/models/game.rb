@@ -58,9 +58,12 @@ class Game < ApplicationRecord
 
     start! unless game_started?
 
-    game_moves.create! game_player: game_player(player), row: row, column: column
+    game_move = game_moves.create! game_player: game_player(player),
+                                   row: row,
+                                   column: column
 
-    check_winner!
+    check_winning_move! game_move
+
     end! if draw?
   end
 
@@ -109,14 +112,12 @@ class Game < ApplicationRecord
   end
 
   private
-    def check_winner!
-      winner = game_players.to_a.detect do |game_player|
-                 game_player.horizontally_align? ||
-                 game_player.vertically_align?   ||
-                 game_player.diagonally_align?
-               end
+    def check_winning_move!(game_move)
+      win = game_move.horizontally_align? ||
+            game_move.vertically_align?   ||
+            game_move.diagonally_align?
 
-      winning(winner.user) if winner
+      winning(game_move.user) if win
     end
 
     def winning(winner)

@@ -22,35 +22,4 @@ class GamePlayer < ApplicationRecord
   def token
     TOKEN[game.players.to_a.index(user)]
   end
-
-  def horizontally_align?
-    (0...game.board_size).detect do |i|
-      game_moves.where(row: i).count == game.board_size
-    end
-  end
-
-  def vertically_align?
-    (0...game.board_size).detect do |i|
-      game_moves.where(column: i).count == game.board_size
-    end
-  end
-
-  def diagonally_align?
-    diagonally_align_downward? || diagonally_align_upward?
-  end
-
-  private
-    def diagonally_align_downward?
-      (0...game.board_size).all? do |i|
-        game_moves.where(row: i, column: i).count == 1
-      end
-    end
-
-    def diagonally_align_upward?
-      limit = game.board_size - 1
-
-      (0...game.board_size).all? do |i|
-        game_moves.where(row: i, column: limit - i).count == 1
-      end
-    end
 end
