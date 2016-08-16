@@ -22,6 +22,8 @@ class GameMove < ApplicationRecord
   end
 
   def winning_move?
+    return if game.game_moves.count < game.board_size * 2
+
     horizontally_align? ||
     vertically_align?   ||
     diagonally_align?
