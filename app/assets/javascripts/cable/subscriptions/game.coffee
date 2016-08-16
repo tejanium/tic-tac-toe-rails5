@@ -6,14 +6,21 @@ $ ->
 
   App.cable.subscriptions.create { channel: 'GameChannel', id: $game.data('id') },
     received: (data) ->
+      show_move = (data) ->
+        if $game.data('user') == data.player
+          $('.move').show()
+        else
+          $('.move').hide()
+
       switch data.topic
         when 'game'
           $('#content').html(data.body).promise().done ->
-            $('.move').show() if $game.data('user') == data.player
+            show_move(data)
+
         when 'move'
           $tile = $("#game .tile[data-column=#{ data.column }][data-row=#{ data.row }]")
 
           $tile.replaceWith(data.body).promise().done ->
-            $('.move').show() if $game.data('user') == data.player
+            show_move(data)
 
           $('#notification').text(data.notification)

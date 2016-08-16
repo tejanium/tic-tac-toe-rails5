@@ -18,7 +18,7 @@ class GamesController < ApplicationController
     if @game.valid?
       redirect_to game_path @game
     else
-      flash[:error] = @game.errors.full_messages.join(', ')
+      flash[:error] = "WARNING: #{ @game.errors.full_messages.join(', ') }"
 
       redirect_to games_path
     end
@@ -39,7 +39,7 @@ class GamesController < ApplicationController
       end
     rescue RuntimeError => e
       flash[:error] = e
-    ensure
+
       redirect_to game_path game
     end
   end

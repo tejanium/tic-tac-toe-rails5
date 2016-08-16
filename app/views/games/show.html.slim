@@ -1,11 +1,9 @@
 h1 = "Game ##{ @game.id }"
 
-= flash[:error]
-
 h4 = @game.game_players.map{|x| "(#{ x.token }) #{ x.user.name }" }.join(', ')
 
 #notification.alert.alert-info
-  = game_notification
+  = flash[:error] || game_notification
 
 .well
   #game data-id=@game.id data-player=@game.current_player&.id data-user=current_user.id
