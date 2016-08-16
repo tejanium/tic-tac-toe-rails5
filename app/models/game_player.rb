@@ -15,12 +15,12 @@ class GamePlayer < ApplicationRecord
   belongs_to :game
   belongs_to :user
 
+  has_many :game_moves, ->(game_player){
+    where(game_player_id: game_player.id)
+  }, through: :game
+
   def token
     TOKEN[game.players.to_a.index(user)]
-  end
-
-  def game_moves
-    game.game_moves.where(game_player_id: id)
   end
 
   def horizontally_align?
