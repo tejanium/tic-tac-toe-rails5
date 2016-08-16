@@ -57,4 +57,7 @@ Rails.application.configure do
     Bullet.enable        = true
     Bullet.rails_logger  = true
   end
+
+  # ActionCable
+  config.action_cable.allowed_request_origins = [/http:\/\/localhost\:*/, /http:\/\/192\.168\.*/]
 end
