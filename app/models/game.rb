@@ -63,7 +63,10 @@ class Game < ApplicationRecord
                                    column: column
 
     winning(game_move.user) if game_move.winning_move?
+
     end! if draw?
+
+    game_move
   end
 
   def game_player(player)

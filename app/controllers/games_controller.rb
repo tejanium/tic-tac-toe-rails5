@@ -30,9 +30,13 @@ class GamesController < ApplicationController
 
   def move
     begin
-      game.move current_user, params[:row], params[:column]
+      move = game.move current_user, params[:row], params[:column]
 
-      broadcast_game
+      if game.over?
+        broadcast_game
+      else
+        broadcast_move(move)
+      end
     rescue RuntimeError => e
       flash[:error] = e
     ensure
@@ -67,9 +71,39 @@ class GamesController < ApplicationController
       redirect_to root_path unless current_user
     end
 
+    helper_method def game_notification
+      if game.over?
+        if game.draw?
+          "It's a draw"
+        else
+          "#{ @game.winner.name } won!"
+        end
+      else
+        "It's #{ @game.current_player.name }'s turn"
+      end
+    end
+
     def broadcast_game
       GameChannel.broadcast_to game,
+                               topic: :game,
                                body: render_to_string(:show, layout: false),
                                player: game.current_player&.id
+    end
+
+    def broadcast_move(move)
+      tile = render_to_string partial: 'games/template/tile',
+                              locals: {
+                                column: move.column,
+                                row: move.row,
+                                tile: move.game_player.token
+                              }
+
+      GameChannel.broadcast_to game,
+                               topic: :move,
+                               body: tile,
+                               player: game.current_player&.id,
+                               column: move.column,
+                               row: move.row,
+                               notification: game_notification
     end
 end

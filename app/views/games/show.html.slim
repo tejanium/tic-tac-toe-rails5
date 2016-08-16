@@ -1,22 +1,18 @@
 h1 = "Game ##{ @game.id }"
-#game.hidden data-id=@game.id data-player=@game.current_player&.id data-user=current_user.id
 
 = flash[:error]
 
 h4 = @game.game_players.map{|x| "(#{ x.token }) #{ x.user.name }" }.join(', ')
 
+#notification.alert.alert-info
+  = game_notification
+
+.well
+  #game data-id=@game.id data-player=@game.current_player&.id data-user=current_user.id
+    = render_game @game
+
 - if @game.over?
-  - if @game.draw?
-    h4 It's a draw
-  - else
-    h4 #{ @game.winner.name } won!
-- else
-  h4 It's #{ @game.current_player.name }'s turn
-
-.well.game
-  = render_game @game
-
-h4 History
-ol
-  - @game.game_moves.each do |game_move|
-    li = "#{ game_move.user.name } move to (#{ game_move.row }, #{ game_move.column })"
+  h4 History
+  ol
+    - @game.game_moves.each do |game_move|
+      li = "#{ game_move.user.name } move to (#{ game_move.row }, #{ game_move.column })"

@@ -4,7 +4,7 @@
 - tile_class += 'col-first '  if column == 0
 - tile_class += 'col-last '   if column == @game.board_size - 1
 
-.tile class=tile_class
+.tile class=tile_class data-column=column data-row=row
   - if tile
     .token = tile
   - else
