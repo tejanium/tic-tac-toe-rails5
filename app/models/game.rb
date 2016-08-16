@@ -62,8 +62,7 @@ class Game < ApplicationRecord
                                    row: row,
                                    column: column
 
-    check_winning_move! game_move
-
+    winning(game_move.user) if game_move.winning_move?
     end! if draw?
   end
 
@@ -112,14 +111,6 @@ class Game < ApplicationRecord
   end
 
   private
-    def check_winning_move!(game_move)
-      win = game_move.horizontally_align? ||
-            game_move.vertically_align?   ||
-            game_move.diagonally_align?
-
-      winning(game_move.user) if win
-    end
-
     def winning(winner)
       update_attribute :winner_id, winner.id
       end!

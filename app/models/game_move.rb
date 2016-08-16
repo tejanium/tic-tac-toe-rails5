@@ -21,6 +21,12 @@ class GameMove < ApplicationRecord
     game_player.game_moves
   end
 
+  def winning_move?
+    horizontally_align? ||
+    vertically_align?   ||
+    diagonally_align?
+  end
+
   def horizontally_align?
     sibling_moves.where(row: row).count == game.board_size
   end
